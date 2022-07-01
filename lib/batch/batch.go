@@ -1,8 +1,11 @@
 package batch
 
 import (
+	"context"
 	"sync"
 	"time"
+
+	"golang.org/x/sync/errgroup"
 )
 
 type user struct {
