@@ -32,3 +32,21 @@ func getBatch(n int64, pool int64) (res []user) {
 	wg.Wait()
 	return res
 }
+
+func getBatch2(n int64, pool int64) (res []user) {
+	res = make([]user, n)
+	var i int64
+	errGr, _ := errgroup.WithContext(context.Background())
+	errGr.SetLimit(int(pool))
+
+	for i = 0; i < n; i++ {
+		j := i
+		errGr.Go(func() error {
+			res[j] = getOne(j)
+			return nil
+		})
+	}
+	errGr.Wait()
+
+	return res
+}
